@@ -65,17 +65,13 @@ header{
 
 /* SLIDER */
 
-h5{
-    padding:8px;
-    background-color:black;
-    color:grey;
-    text-align:center;
-}
+
 header:nth-child(2){
+    margin-top:20px;;
     display:flex;
     flex-direction:column;
     align-items:center;
-    background-color:gray;
+    background-color:aqua;
 }
 
 #carouselExampleSlidesOnly{
@@ -84,4 +80,133 @@ header:nth-child(2){
 
 #carouselExampleSlidesOnly img{
     height:15rem;/**/
-  }
+}
+
+
+main{
+    margin-bottom:0.5rem;
+   /* background-color:red;*/
+    display:flex;
+    justify-content:center;
+}
+
+.centrado2{
+    margin:auto;
+    display:block;
+}
+.wrapper .imagen{
+  margin-top:30px;
+  font-size: 35px;
+  width:400px;
+  line-height: 100px;
+  color: #fff;
+  border-radius: 15px 15px 0 0;
+  background: linear-gradient(-135deg, #c850c0, #4158d0);
+}
+.wrapper form{
+  padding: 10px 30px 50px 30px;
+  height:300px;
+  width:400px;
+  background-color:white;
+  border-bottom: 60px solid white;
+  border-bottom-left-radius: 33px;
+  border-bottom-right-radius: 33px;
+  margin-bottom:50px;
+}
+.wrapper form .field{
+  height: 50px;
+  width: 100%;
+  margin-top: 30px;
+  position: relative;
+}
+.wrapper form .field input{
+  height: 100%;
+  width: 100%;
+  outline: none;
+  font-size: 17px;
+  padding-left: 20px;
+  border: 1px solid lightgrey;
+  border-radius: 25px;
+  transition: all 0.3s ease;
+}
+.wrapper form .field input:focus,
+form .field input:valid{
+  border-color: #4158d0;
+}
+.wrapper form .field label{
+  position: absolute;
+  top: 50%;
+  left: 20px;
+  color: #999999;
+  font-weight: 400;
+  font-size: 17px;
+  pointer-events: none;
+  transform: translateY(-50%);
+  transition: all 0.3s ease;
+}
+form .field input:focus ~ label,
+form .field input:valid ~ label{
+  top: 0%;
+  font-size: 16px;
+  color: #4158d0;
+  background: #fff;
+  transform: translateY(-50%);
+}
+
+form .content label{
+  color: #262626;
+  user-select: none;
+  padding-left: 5px;
+}
+
+form .field input[type="submit"]{
+  color: #fff;
+  border: none;
+  padding-left: 0;
+  margin-top: 10px;
+  font-size: 20px;
+  font-weight: 500;
+  cursor: pointer;
+  background: linear-gradient(-135deg, #c850c0, #4158d0);
+  transition: all 0.3s ease;
+}
+/* EFECTO BOTON CLICK*/
+form .field input[type="submit"]:active{
+  transform: scale(0.95);
+}
+
+h5{
+  padding:5px;
+  background-color:black;
+  color:white;
+  text-align:center;
+  font-weight:bold;
+}
+
+footer{
+  padding:8px;
+  text-align:center;
+  font-size:22px;
+  font-weight:bold;
+  color:gray;
+}
+/* para pc */
+@media (min-width:1000px){
+  .menu{
+  max-width: 60%;
+}
+#carouselExampleSlidesOnly{
+  width:80%;
+}
+#carouselExampleSlidesOnly img{
+  height:24rem;/**/
+}
+.wrapper form{
+  height:310px;
+  width:600px;
+}
+.wrapper .imagen{
+  width:600px;
+}
+
+}
