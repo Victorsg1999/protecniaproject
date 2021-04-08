@@ -12,10 +12,13 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
   <!--Mis archivos-->
   <link rel="stylesheet" href="estilos.css">
+  <script src="librerias/jquery/jquery-3.3.1.min.js"></script>
+  <script src="procesos/redirecionadministrativa.js"></script>
   <title>Home Login </title>
 </head>
 
 <body>
+  <div id="color">
   <header>
     <nav class="navbar navbar-expand-sm navbar-light centrado">
       <div class="navbar-collapse menu" id="navbarNav">
@@ -47,6 +50,7 @@
   <header>
     <!--CARRUSEL-->
     <div id="carouselExampleSlidesOnly" class="carousel slide" data-bs-ride="carousel">
+      <h1>"Hacemos las cosas bien, a la primera"</h1>
       <div class="carousel-inner">
         <div class="carousel-item active">
           <img src="https://protecnia.es/wp-content/uploads/2020/02/sorio_y_borja.jpg" class="d-blockimg-fluid  w-100"
@@ -70,25 +74,32 @@
   <main class=".container-fluid">
     <section>
       <div class="wrapper">
+                      <div class="error">
+      <span>Datos de ingreso no válidos, inténtelo de nuevo  por favor</span>
+    </div>
         <div class="imagen">
           <img src="https://protecnia.es/wp-content/uploads/2020/02/logo_protecnia.png" class="centrado2">
         </div>
-        <form action="#">
+        <form action="" id="formLg">
           <div class="field">
-            <input type="text" required>
-            <label>Email Address</label>
+            <input type="text" required name="usuariolg">
+            <label>Usuario</label>
           </div>
           <div class="field">
-            <input type="password" required>
-            <label>Password</label>
+            <input type="password" required name="passlg">
+            <label>Contraseña</label>
           </div>
+       <!--   <div class="alert alert-danger formularioincorrecto" role="alert">
+    		<strong>El usuario y la contraseña no son validos.</strong>
+		  </div>--->
           <div class="field">
-            <input type="submit" value="Login">
+            <input type="submit" value="Iniciar Sesion" class="botonlg">
           </div>
         </form>
       </div>
     </section>
   </main>
+  </div>
   <footer class=".container-fluid bg-dark">Protecnia 2021</footer>
 
 </body>
