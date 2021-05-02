@@ -7,6 +7,10 @@ Class Conexion{
 		$usr="root";
 		$pass="";
 		$bd="login";
+		/*$usr="protecni_victoradmin";
+		$pass="protecnia2021!";
+		$bd="protecni_administration";*/
+		
 		$mysqli = new mysqli($server, $usr, $pass, $bd); 
 		if ($mysqli->connect_errno) { 
 			echo "Error: Fallo al conectarse a MySQL debido a: \n"; 

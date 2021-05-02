@@ -1,0 +1,55 @@
+<?php
+$usuario = new Usuario();
+if (isset($_POST['registro'])) {
+$usuariolg = htmlspecialchars(trim($_POST['usuariolg']));
+$passlg = htmlspecialchars(trim($_POST['passlg']));
+$resultado=$usuario->existeusuario($usuariolg,$passlg);
+  if($resultado=="ok"){
+    $_SESSION["usuario"] = "admin";
+    header("Location:index.php?p=clientes");
+  }else{
+    echo $resultado;
+  }
+}
+?>
+
+<style type="text/css">
+/*  .contenido {
+    color: #36A0FF;
+    font-size: 27px;
+    padding: 10px;
+}
+
+.bigicon {
+    font-size: 35px;
+    color: #36A0FF;
+}*/
+</style>
+    <section>
+
+      <div class="wrapper">
+      <div class="error">
+      <span>Datos de ingreso no válidos, inténtelo de nuevo  por favor</span>
+      </div>
+        <div class="imagen">
+          <img src="https://protecnia.es/wp-content/uploads/2020/02/logo_protecnia.png" class="formimagencentrada">
+        </div>
+        <form method="POST" id="formlogin">
+          <div class="field">
+            <input type="text" required name="usuariolg">
+            <label>Usuario</label>
+          </div>
+          <div class="field">
+            <input type="password" required name="passlg">
+            <label>Contraseña</label>
+          </div>
+
+          <div class="field">
+            <input type="submit" name="registro" value="Iniciar Sesion" class="botonlg">
+          </div>
+        </form>
+      </div>
+    </section>
+           <!--   <div class="alert alert-danger formularioincorrecto" role="alert">
+        <strong>El usuario y la contraseña no son validos.</strong>
+      </div>--->

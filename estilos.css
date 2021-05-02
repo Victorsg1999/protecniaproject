@@ -3,105 +3,247 @@
     padding:0;
 }
 
-#color{
-	padding-top:20px;
-	background-color:aqua;
-}
-/* AQUI PRIMER PUNTO DE CONTROL*/
-header:first-child{
-	/*margin-top:20px;*/
-    margin-bottom:30px;
+/* AQUI PRIMER PUNTO DE CONTROL PARA MOVIL*/
+
+body{
+    min-height:100vh;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
 }
 
+header{
+  background-color:aqua;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  margin-bottom:0px;
+
+}
+
+header nav{
+   width:100%;
+}
+
+header nav:nth-child(2){
+  display:block;
+  background-color:blue;
+  font-size:20px;
+  width:100%;
+}
+
+header nav:nth-child(2) li{
+  display:flex;
+  justify-content:space-between;
+}
+
+/* Modificación clase boostrap*/
+
+.container-fluid{
+  width:100%;
+  padding:0;
+  margin:0;
+}
+
+/* Corresponde al menu del header */
+
+.unificado{
+  padding:0px;
+}
+
+.menucentrado{
+  display:flex;
+  justify-content:center;
+}
+
+.menu1centrado{
+  padding-bottom:30px;
+  display: flex;
+  justify-content: center;
+}
+
+.menu1{
+  max-width:70%;
+}
+
+.menu1 ul:first-child{
+  flex-direction:row;
+  justify-content: center;
+  min-width:26%;
+}
+
+.menu1 ul:first-child li{
+  margin:5px;
+  margin-left:20px;
+}
+
+.menu1 ul:last-child li a span span:nth-child(2){
+  display:none;
+}
+
+.menu1 ul:last-child li a span{
+  display: flex;
+  flex-direction: column;
+}
+
+.menu1 ul:last-child{
+  display: flex;
+  flex-direction: column;
+}
+
+.menu1 ul:last-child li a{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Menu desplegable*/
+
+.hrmenu{
+    height:0.2rem!important;
+    background-color:#dc3545;
+    opacity:unset;
+}
+
+.colorbotonmenu{
+  background-color:#dc3545;
+}
+
+/* menucentrado*/
+.centrandomenu{
+  display:flex;
+  justify-content:center;
+  align-items:center;
+}
+
+
+/* Corresponde a la foto del header */
+
+#logo{
+  min-width:50%;
+  max-width:100%;
+}
+
+#logo img{
+  width:100%;
+}
+
+#logo{
+  display:flex;
+  justify-content: center;
+}
+
+/* CARRUSEL */
+
+#carouselExampleSlidesOnly{
+  width:100%;
+  background-color:gray;
+}
+
+#carouselExampleSlidesOnly img{
+  height:15rem;/**/
+}
+
+h5{
+  padding:5px;
+  background-color:black;
+  color:white;
+  text-align:center;
+  font-weight:bold;
+  margin-bottom:0;
+}
+
+
+/* Frase hacemos cosas bien a la primera*/
 h1{
   text-align:center;
   padding:10px;
   margin:0;
-      color: #FFFFFF;
-    font-family: "Gilda Display", Sans-serif;
-    font-size: 22px;
-    font-weight: 700;
-    font-style: italic;
-    background-color:blue;
-}
-
-.centrado{
-    display: flex;
-    justify-content: center;
-}
-
-/* Cambiar para telefono,tablet*/
-.menu{
-    max-width:70%;
-}
-
-.menu ul:first-child{
-    flex-direction:row;
-   justify-content: center;
-    min-width:26%;
-}
-
-.menu ul:first-child li{
-    margin:5px;
-    margin-left:20px;
-}
-
-.menu ul:last-child li a span span:nth-child(2){
-    display:none;
-}
-
-.menu ul:last-child li a span{
-    display: flex;
-    flex-direction: column;
-}
-
-.menu ul:last-child{
-    display: flex;
-    flex-direction: column;
-}
-.menu ul:last-child li a{
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-#logo{
-    min-width:50%;
-    max-width:100%;
-}
-#logo img{
-    width:100%;
-}
-
-#logo{
-    display:flex;
-    justify-content: center;
-}
-
-header:nth-child(2){
-    display:flex;
-    flex-direction:column;
-    align-items:center;
-    margin-bottom:0px;
-}
-
-#carouselExampleSlidesOnly{
-    width:100%;
-    background-color:gray;
-}
-
-#carouselExampleSlidesOnly img{
-    height:15rem;/**/
+  color: #FFFFFF;
+  font-family: "Gilda Display", Sans-serif;
+  font-size: 22px;
+  font-weight: 700;
+  font-style: italic;
+  background-color:blue;
 }
 
 main{
-    background-color:gray;
-    display:flex;
-    justify-content:center;
+  background-color:gray;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  flex-grow:1;
+
 }
 
-.centrado2{
-    margin:auto;
-    display:block;
+/* Inicio HISTORIA PROTECNIA */
+
+#inicio{
+  display: flex;
+  justify-content: center;
+  background-color:white;
+  width:100%;
+  padding:0;
+  margin:0;
+  flex-direction:column;
+  align-items: center;
+}
+
+#inicio article:nth-child(1){
+  width:70%;
+}
+
+#inicio article:nth-child(1) p{
+  margin-bottom:22px;
+}
+
+#inicio article:nth-child(2) {
+    width: 70%;
+    margin-bottom: 30px;
+    display: flex;
+    justify-content: center;
+}
+
+.historiaprocnia{
+  width:100%;
+  margin-top:22px;
+  margin-bottom:22px;
+  text-align:center;
+}
+
+#mensajecorporativo{
+  display:flex;
+  justify-content:space-around;
+  align-items:center;
+  flex-direction:row;
+  background-color:yellow;
+  width:100%;
+}
+
+#mensajecorporativo h4{
+  display: flex;
+  flex-direction: column;
+}
+
+/* Parte del formulario del login*/
+
+.wrapper{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+}
+
+.error{
+  padding:10px;
+  margin-top:15px;
+  width:300px;
+  font-size:19px;
+  background-color: #E74F4F;
+  color: #fff;
+  text-align: center;
+  display: none;
+  font-weight:bold;
 }
 
 .wrapper .imagen{
@@ -113,6 +255,12 @@ main{
   border-radius: 15px 15px 0 0;
   background: linear-gradient(-135deg, #c850c0, #4158d0);
 }
+
+.formimagencentrada{
+  margin:auto;
+  display:block;
+}
+
 .wrapper form{
   padding: 10px 30px 50px 30px;
   height:280px;
@@ -123,12 +271,14 @@ main{
   border-bottom-right-radius: 33px;
   margin-bottom:50px;
 }
+
 .wrapper form .field{
   height: 50px;
   width: 100%;
   margin-top: 30px;
   position: relative;
 }
+
 .wrapper form .field input{
   height: 100%;
   width: 100%;
@@ -139,10 +289,12 @@ main{
   border-radius: 25px;
   transition: all 0.3s ease;
 }
+
 .wrapper form .field input:focus,
 form .field input:valid{
   border-color: #4158d0;
 }
+
 .wrapper form .field label{
   position: absolute;
   top: 50%;
@@ -154,6 +306,7 @@ form .field input:valid{
   transform: translateY(-50%);
   transition: all 0.3s ease;
 }
+
 form .field input:focus ~ label,
 form .field input:valid ~ label{
   top: 0%;
@@ -173,25 +326,16 @@ form .field input[type="submit"]{
   color: #fff;
   border: none;
   padding-left: 0;
-  /*margin-top:-12px;*/
   font-size: 20px;
   font-weight: 500;
   cursor: pointer;
   background: linear-gradient(-135deg, #c850c0, #4158d0);
   transition: all 0.3s ease;
 }
+
 /* EFECTO BOTON CLICK*/
 form .field input[type="submit"]:active{
   transform: scale(0.95);
-}
-
-h5{
-  padding:5px;
-  background-color:black;
-  color:white;
-  text-align:center;
-  font-weight:bold;
-  margin-bottom:0;
 }
 
 footer{
@@ -201,169 +345,223 @@ footer{
   font-weight:bold;
   color:gray;
 }
+/* Formulario Contacto */
 
-.error{
-	padding:10px;
- margin-top:15px;
-/* margin-left:25%;*/
-margin-left:7%;
-  width:300px;
-  font-size:19px;
-  background-color: #E74F4F;
-  color: #fff;
- text-align: center;
-  display: none;
-  font-weight:bold;
+#formulariocontacto{
+  width: 100%;
+  display: flex;
 }
+
+fieldset{
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+}
+
+fieldset > div{
+  margin:1rem;
+  width:80%;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+}
+
+
+fieldset span{
+  margin-right:1rem;
+}
+
+.contactolegend {
+    color: #36A0FF;
+    font-size: 27px;
+    padding: 10px;
+    text-align:center;
+}
+
+.iconocontacto {
+    font-size: 35px;
+    color: #36A0FF;
+}
+
+/* Registro cliente */
+
+.color{
+  background-color:#acacac;
+}
+
+.separacionclienteh2{
+  padding-top:60px;
+}
+
+.separacioncontroles{
+  margin-top:30px;
+  margin-bottom:30px;
+}
+
+.btncancelar{
+  float:right;
+  margin-left:10px;
+}
+
+.btnguardar{
+  float:right;
+}
+
+
+
+
+
+
 /* SEGUNDO PUNTO DE CONTROL*/
 /* Movil mas grande*/
 @media (min-width:576px){
 
-.menu ul:first-child li{
+#inicio article:nth-child(2) {
+    width: 20%;
+    margin-bottom: 44px;
+}
+
+  .menu ul:first-child li{
     margin:5px;
     margin-left:0px;
-}
-.menu{
+  }
+  .menu{
     max-width:100%;
-}
-#logo{
+  }
+  #logo{
     max-width:60%;
-}
-#logo img{
+  }
+  #logo img{
     margin-left:10%;
     width:90%;
-}
-.menu ul:first-child{
+  }
+  .menu ul:first-child{
     min-width:20%;
 
-}
-.menu ul:last-child{
+  }
+  .menu ul:last-child{
     min-width:20%;
+  }
 }
-}
+
 /* TERCER PUNTO DE CONTROL TABLET*/
 @media (min-width:674px){
 
-.menu ul:first-child li{
+  .menu ul:first-child li{
     margin:5px;
     margin-left:10px;
-}
-.menu{
+  }
+  .menu{
     max-width:100%;
-}
-#logo{
-    /*min-width:60%;*/
+  }
+  #logo{
     max-width:50%;
-   /* background-color:red;*/
-}
-#logo img{
-   margin-right:10%;
+  }
+  #logo img{
+    margin-right:10%;
     width:90%;
-}
-.menu ul:first-child{
-    min-width:25%;
-}
-.menu ul:last-child{
-    min-width:25%;
+  }
 
-}
-.wrapper form{
-  height:280px;
-  width:430px;
-}
-.wrapper .imagen{
-  width:430px;
-}
-.error{
-margin-left:18%;
-}
+  .menu ul:first-child{
+    min-width:25%;
+  }
+
+  .menu ul:last-child{
+    min-width:25%;
+  }
+
+  .wrapper form{
+    height:280px;
+    width:430px;
+  }
+
+  .wrapper .imagen{
+    width:430px;
+  }
+
 }
 /* CUARTO PUNTO DE CONTROL*/
 @media (min-width:900px){
+  
+  header nav:nth-child(2){
+    width:80%;
+  }
+
   .wrapper form{
-  height:280px;
-  width:480px;
-}
-.wrapper .imagen{
-  width:480px;
-}
-#carouselExampleSlidesOnly{
-  width:80%;
-}
+    height:280px;
+    width:480px;
+  }
+
+  .wrapper .imagen{
+    width:480px;
+  }
+
+  #carouselExampleSlidesOnly{
+    width:80%;
+  }
+
   .menu{
-  max-width: 80%;
-}
-.error{
-margin-left:20%;
-}
+    max-width: 80%;
+  }
+
 }
 
 /* QUINTO PUNTO DE CONTROL*/
 @media (min-width:1000px){
 
-/*  body{
-   background-color:red;
-}*/
-.menu ul:first-child{
-    justify-content: center;
-}
+  .menu ul:first-child{
+      justify-content: center;
+  }
 
-.wrapper form{
-  height:280px;
-  width:530px;
-}
-.wrapper .imagen{
-  width:530px;
-}
-#logo img{
-    width:100%;
-}
-#carouselExampleSlidesOnly img{
-  height:18rem;
-}
-.menu{
-  max-width: 70%;
-}
-.error{
-margin-left:23%;
-}
+  .wrapper form{
+    height:280px;
+    width:530px;
+  }
+  .wrapper .imagen{
+    width:530px;
+  }
+  #logo img{
+      width:100%;
+  }
+  #carouselExampleSlidesOnly img{
+    height:18rem;
+  }
+  .menu{
+    max-width: 70%;
+  }
+  
+
+
 }
 /* PENSARMELO*/
 /* SEXTO PUNTO DE CONTROL*/
 @media (min-width:1200px){
 
-.menu{
-  max-width: 70%;
-}
+  .menu{
+    max-width: 70%;
+  }
 
-#carouselExampleSlidesOnly{
-  width:70%;
-}
 
-#carouselExampleSlidesOnly img{
-  height:20rem;
-}
-.error{
-margin-left:25%;
-}
+  #carouselExampleSlidesOnly{
+    width:80%;
+  }
+
+  #carouselExampleSlidesOnly img{
+    height:20rem;
+  }
+
 /* ULTIMO PUNTO DE CONTROL*/
 @media (min-width:1400px){
-/*
-.menu{
-  max-width: 60%;
-}
-*/
-#carouselExampleSlidesOnly{
-  width:60%;
-}/*
-#carouselExampleSlidesOnly img{
-  height:24rem;
-}
-*/
-h1{
-padding:10px;
+
+  #carouselExampleSlidesOnly{
+    width:60%;
+  }
+  header nav:nth-child(2){
+    width:60%;
+  }
+  h1{
+    padding:10px;
     font-size: 35px;
-
-}
-
+  }
 }
