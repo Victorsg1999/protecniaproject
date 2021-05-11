@@ -46,7 +46,6 @@
                 <div id="navbarNavDropdown" class="collapse navbar-collapse text-danger centrandomenu">
                     <ul class="navbar-nav centrandomenu">
                       <?php
-                      ob_start();  
                         if($_SESSION["usuario"] == ""){
                       ?>
                         <li class="nav-item">
@@ -58,23 +57,51 @@
                         <li class="nav-item">
                             <a class="nav-link text-danger" href="<?php echo $_SERVER['PHP_SELF']?>?p=contacto" class="<?php if ($pagina=="contacto") {echo "current"; }?>">Contacto</a>
                         </li>
-                          <?php  
-                          }else{
+                      <?php  
+                        }else if($_SESSION["usuario"]=="admin"){
                       ?>
-                        <li class="nav-item">
-                        	<!-- Home-->
+                          <li class="nav-item">
+                              <a class="nav-link text-danger" href="<?php echo $_SERVER['PHP_SELF']?>?p=clientes" class="<?php if ($pagina=="clientes") {echo "current"; }?>">Clientes</a>
+                          </li>
+                          <li class="nav-item">
+                              <a class="nav-link text-danger" href="<?php echo $_SERVER['PHP_SELF']?>?p=creartrabajador" class="<?php if ($pagina=="creartrabajador") {echo "current"; }?>">Añadir nuevo Empleado</a>
+                          </li>
+                          <li class="nav-item">
+                              <a class="nav-link text-danger" href="<?php echo $_SERVER['PHP_SELF']?>?p=crearcliente" class="<?php if ($pagina=="crearcliente") {echo "current"; }?>">Añadir nuevo Cliente</a>
+                          </li>
+                          <li class="nav-item">
+                            <a class="nav-link text-danger" href="<?php echo $_SERVER['PHP_SELF']?>?p=cerrarsesion" class="<?php if ($pagina=="cerrarsesion") {echo "current"; }?>">Cerrar Sesion</a>
+                          </li>
+                         <?php 
+                           }else if($_SESSION["usuario"]=="trabajador"){
+                          ?>
+                          <li class="nav-item">
+                              <a class="nav-link text-danger" href="<?php echo $_SERVER['PHP_SELF']?>?p=update&id=$id" class="<?php if ($pagina=="update") {echo "current"; }?>">Mi ficha</a>
+                          </li>
+                          <li class="nav-item">
                               <a class="nav-link text-danger" href="<?php echo $_SERVER['PHP_SELF']?>?p=clientes" class="<?php if ($pagina=="clientes") {echo "current"; }?>">Clientes</a>
                           </li>
                           <li class="nav-item">
                               <a class="nav-link text-danger" href="<?php echo $_SERVER['PHP_SELF']?>?p=crearcliente" class="<?php if ($pagina=="crearcliente") {echo "current"; }?>">Añadir nuevo Cliente</a>
                           </li>
                           <li class="nav-item">
-                              <a class="nav-link text-danger" href="<?php echo $_SERVER['PHP_SELF']?>?p=cerrarsesion" class="<?php if ($pagina=="cerrarsesion") {echo "current"; }?>">Cerrar Sesion</a>
+                            <a class="nav-link text-danger" href="<?php echo $_SERVER['PHP_SELF']?>?p=cerrarsesion" class="<?php if ($pagina=="cerrarsesion") {echo "current"; }?>">Cerrar Sesion</a>
                           </li>
-                      <?php
-                      ob_end_flush(); 
-                        }
-                      ?>
+                          <?php
+                          }else{
+                          ?>
+                          <li class="nav-item">
+                              <a class="nav-link text-danger" href="<?php echo $_SERVER['PHP_SELF']?>?p=update&id=$id" class="<?php if ($pagina=="update") {echo "current"; }?>">Mi ficha</a>
+                          </li>
+                          <li class="nav-item">
+                              <a class="nav-link text-danger" href="<?php echo $_SERVER['PHP_SELF']?>?p=update&id=$id" class="<?php if ($pagina=="update") {echo "current"; }?>">Mi historico</a>
+                          </li>
+                          <li class="nav-item">
+                            <a class="nav-link text-danger" href="<?php echo $_SERVER['PHP_SELF']?>?p=cerrarsesion" class="<?php if ($pagina=="cerrarsesion") {echo "current"; }?>">Cerrar Sesion</a>
+                          </li>
+                          <?php
+                          }
+                          ?>
                     </ul>
                 </div>
             </div>

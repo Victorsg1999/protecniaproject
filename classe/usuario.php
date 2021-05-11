@@ -4,6 +4,7 @@
 
 		Class Usuario{
 
+			private $id;
 			private $nombre;
 			private $apellidos;
 			private $email;
@@ -13,7 +14,8 @@
 			private $usuario;
 			private $contraseña;
 
-			function __construct($nombre="",$apellidos="",$email="",$telefono="",$ciudad="",$cp="",$usuario="",$contraseña=""){
+			function __construct($id="",$nombre="",$apellidos="",$email="",$telefono="",$ciudad="",$cp="",$usuario="",$contraseña="",$tipo=""){
+				$this->id = $id;
 				$this->nombre = $nombre;
 				$this->apellidos=$apellidos;
 				$this->email = $email;
@@ -21,7 +23,12 @@
 				$this->ciudad = $ciudad;
 				$this->cp = $cp;
 				$this->usuario = $usuario;
-				$this->contraseña = $contraseña;			
+				$this->contraseña = $contraseña;
+				$this->tipo = $tipo;		
+			}
+
+			function get_id(){
+				return $this->id;
 			}
 
 			function get_nombre(){
@@ -56,6 +63,10 @@
 				return $this->contraseña;
 			}
 
+			function get_tipo(){
+				return $this->tipo;
+			}
+
 			function existeusuario($usuariolg,$passlg){
 
 				$resultado="";
@@ -64,12 +75,13 @@
 				$conexion = Conexion::conectarBD();
 				echo $this->usuario;
 				echo $this->contraseña;
-				$sql ="Select usuario,tipo From usuarios Where usuario='".$this->usuario."'AND contraseña='".$this->contraseña."'";
+				$sql ="Select id,usuario,tipo,contraseña From usuarios Where usuario='".$this->usuario."'AND contraseña='".$this->contraseña."'";
 
-				if ($totalemail=$conexion->query($sql)) {
-					$cantidademail = $totalemail->num_rows;
-					if($cantidademail>0){
-						$datos= $totalemail->fetch_assoc();
+				if ($result=$conexion->query($sql)) {
+					if($result->num_rows>0){
+						$fila = $result->fetch_assoc();
+						$this->id = $fila['id'];
+						$this->tipo = $fila['tipo'];
 						Conexion::desconectarBD($conexion);
 						$resultado="ok";
 						return $resultado;
@@ -96,30 +108,56 @@
 				$this->ciudad = $ciudad;
 				$this->cp = $cp;
 
-				if(strlen($nombre)==0){
-					$resultado.=" Nombre,";
+				if(strlen($this->nombre)==0){
+					$resultado.="El nombre debe contener al menos tres caracteres.<br>";
+				}else{
+					if (!preg_match("/^[A-Z||a-z]{3,12}$/", $nombre)) {
+						$resultado.="El nombre debe contener al menos tres caracteres.<br>";
+					}
 				}
 
-				if(strlen($apellidos)==0){
-					$resultado.=" Apellidos,";
+				if(strlen($this->apellidos)==0){
+					$resultado.="Debes incluir los dos apellidos.<br>  ";
+				}else{
+					if (!preg_match("/^[A-Z||a-z]{1,10}\s[A-Z||a-z]{1,10}$/", $this->apellidos)) {
+						$resultado.="Debes incluir los dos apellidos separados por un espacio.<br>";
+					}
+				}
+				if(strlen($this->email)==0){
+					$resultado.=" El email no puede estar vacio. <br> ";
+				}else{
+					if(!preg_match("/^([a-zA-Z0-9])+([a-zA-Z0-9\._-])*@([a-zA-Z0-9_-])+([a-zA-Z0-9\._-]+)+$/",$this->email)) { 
+						$resultado.=" El email debe contener una @ y el resto del email. <br>  ";
+					}
 				}
 
-				if(strlen($email)==0){
-					$resultado.=" Email,";
+				if(strlen($this->telefono)==0){
+					$resultado.="El campo telefono debe contener 9 digitos.<br>";
+				}else{
+					if (!preg_match("/^6[0-9]{8}$/", $this->telefono)) {
+						$resultado.="El campo telefono debe contener 9 digitos y empezar por el numero.<br>"; 
+					}
 				}
 
-				if(strlen($telefono)==0){
-					$resultado.=" Telefono,";
+				if(strlen($this->ciudad)==0){
+					$resultado.="El campo ciudad debe contener al menos 3 caracteres.<br>";
+				}else{
+					if (!preg_match("/^[aA-zZ]{3,20}$/", $this->ciudad)) {
+						$resultado.="El campo ciudad debe contener al menos 3 caracteres.<br>";
+					}
 				}
-
-				if(strlen($ciudad)==0){
-					$resultado.=" C.P";
+				if(strlen($this->cp)==0){
+					$resultado.="El codigo postal no puede estar vacio.<br>";
+				}else{
+					if (!preg_match("/^[0-9]{5}$/", $this->cp)) {
+						$resultado.=" El codigo postal debe contener 5 digitos.<br>"; 
+					}
 				}
 
 				if($resultado==""){
 					$this->registrar();
 				}else{
-				echo '<div class=" container-fluid alert alert-danger" role="alert">Los siguientes campos son erroneos: '.$resultado.'.</div>';
+				echo '<div class="alert alert-danger d-flex justify-content-center" role="alert" style="width:100%">'.$resultado.'</div>';
 				}
 			}// fin funcion registrocliente
 
@@ -127,11 +165,11 @@
 
 				$resultado="";
 				$conexion = Conexion::conectarBD();
-				$sql ="INSERT INTO usuarios (nombre,apellidos,email,telefono,ciudad,cp,usuario,contraseña,tipo) VALUES ('$this->nombre','$this->apellidos', '$this->email','$this->telefono','$this->ciudad','$this->cp','','','cliente')";
+				$sql ="INSERT INTO usuarios (nombre,apellidos,email,telefono,ciudad,cp,usuario,contraseña,tipo) VALUES ('$this->nombre','$this->apellidos', '$this->email','$this->telefono','$this->ciudad','$this->cp','$this->email','$this->email','cliente')";
 
 				if ($conexion->query($sql)) {
 					Conexion::desconectarBD($conexion);
-					echo '<div class=" container-fluid alert alert-success" role="alert">El cliente se ha registrado correctamente!</div>';
+					echo '<div class="alert alert-success d-flex justify-content-center" role="alert" style="width:100%">El cliente se ha registrado correctamente!</div>';
 				}else{
 					echo "no";
 					Conexion::desconectarBD($conexion);
@@ -174,9 +212,92 @@
 				if($resultado==""){
 					$this->guardarpregunta();
 				}else{
-				echo '<div class=" container-fluid alert alert-success" role="alert">Los siguientes campos son erroneos: '.$resultado.'.</div>';
+				echo '<div class=" container-fluid alert alert-danger" role="alert">Los siguientes campos son erroneos: '.$resultado.'.</div>';
 				}
 			}// fin funcion contacto
+
+			function recuperartodoslosdatosusuario($id){
+
+				$this->id = $id;
+				$resultado="";
+				$conexion = Conexion::conectarBD();
+				$sql ='SELECT * FROM usuarios WHERE id='.$this->id;
+
+				if ($resultadonombre = $conexion->query($sql)) {
+					if($resultadonombre->num_rows>0){
+						while ($fila = $resultadonombre->fetch_assoc()){
+							$this->nombre = $fila['nombre'];
+							$this->apellidos = $fila['apellidos'];
+							$this->email = $fila['email'];
+							$this->telefono = $fila['telefono'];
+							$this->ciudad = $fila['ciudad'];
+							$this->cp = $fila['cp'];
+							$this->tipo = $fila['tipo'];
+						}
+						$resultado="";
+						return $resultado;
+					}else{
+						$resultado='<div class=" container-fluid alert alert-danger" role="alert">No existe ese usuario</div>';
+						return $resultado;
+					}
+					Conexion::desconectarBD($conexion);
+				}else{
+					$resultado="<p class='error'><b>Ha ocurrido un error al intentar recuperar tus datos, prueba de nuevo.</b></p>";
+					return $resultado;
+					Conexion::desconectarBD($conexion);
+				}
+			}// fin funcion recuperartodoslosdatosusuario
+
+			function comprobacion_modificacion_datos_usuarios($id,$nombre,$apellidos,$email,$telefono,$ciudad,$cp){
+
+				$resultado=$this->recuperartodoslosdatosusuario($id);
+				$cambios=0;
+
+				if($resultado==""){
+
+					if($this->nombre!=$nombre||$this->apellidos!=$apellidos||$this->email!=$email||$this->telefono!=$telefono||$this->ciudad!=$ciudad||$this->cp!=$cp){
+						$cambios=1;
+						$this->nombre=$nombre;
+						$this->apellidos=$apellidos;
+						$this->email=$email;
+						$this->telefono=$telefono;
+						$this->ciudad=$ciudad;
+						$this->cp=$cp;
+
+					}
+					if($cambios==1){
+						$this->insertarcambios();
+					}else{
+						echo '<div class=" container-fluid alert alert-danger" role="alert">No se ha actualizado ningun dato del usuario!</div>';
+					}
+
+				}
+				
+			}// fin funcion comprobacion_modificacion_datos_usuarios
+
+			function insertarcambios(){
+
+				$resultado="";
+				$conexion = Conexion::conectarBD();
+				$sql = "UPDATE usuarios SET nombre='$this->nombre',apellidos='$this->apellidos',email='$this->email', telefono='$this->telefono',ciudad='$this->ciudad',cp='$this->cp' WHERE id='$this->id'";
+
+				if ($conexion->query($sql)) {
+					Conexion::desconectarBD($conexion);
+					echo '<div class=" container-fluid alert alert-success" role="alert">Se ha actualizado el usuario!</div>';
+				}else{
+					echo "no";
+					Conexion::desconectarBD($conexion);
+				}		
+
+			}// fin funcion insertarcambios
+
+
+
+
+
+
+
+
 /*
 			function guardarpregunta(){
 

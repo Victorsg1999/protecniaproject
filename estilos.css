@@ -28,7 +28,8 @@ header nav{
 
 header nav:nth-child(2){
   display:block;
-  background-color:blue;
+  /* blue*/
+  background-color:aqua;
   font-size:20px;
   width:100%;
 }
@@ -116,8 +117,20 @@ header nav:nth-child(2) li{
   justify-content:center;
   align-items:center;
 }
+/*
+.centrandomenu li:first-child{
+  margin-top:20px
+}
+*/
+/*
+.centrandomenu li{
+  font-weight:bold;
+}
 
-
+.centrandomenu li:hover{
+  background-color:#0d6efd;
+}
+*/
 /* Corresponde a la foto del header */
 
 #logo{
@@ -169,16 +182,24 @@ h1{
 }
 
 main{
-  background-color:gray;
+  /*background-color:#BDBDBD;*/
+  background-color:#a5a5a5;
   display:flex;
   flex-direction:column;
   align-items:center;
   flex-grow:1;
-
+}
+.clientes{
+  /*background-color:#BDBDBD;*/
+  background-color:#a5a5a5;
+  color:black;
+  text-align:center;
 }
 
+.clientes i{
+  padding-right:0.8rem;
 /* Inicio HISTORIA PROTECNIA */
-
+}
 #inicio{
   display: flex;
   justify-content: center;
@@ -399,18 +420,45 @@ fieldset span{
   margin-bottom:30px;
 }
 
-.btncancelar{
-  float:right;
-  margin-left:10px;
+.separacioncontroles div{
+  display:flex;
+  justify-content:flex-end;
 }
 
-.btnguardar{
-  float:right;
+.separacioncontrol{
+  margin-left:1rem;
 }
 
+#perfiles{
+  width:100%;
+  display:flex;
+  flex-direction:row;
+  justify-content:center;
+  /*background-color:red;*/
+}
 
+#perfiles button{
+  background-color:#636363;
+  border: none;
+  color: white;
+  padding: 10px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 20px;
+  margin: 4px 2px;
+  min-width:15%;
+}
 
+#perfiles button:first-child{
+  margin-right:20px;
+}
 
+#perfiles button:hover{
+  background-color:black;
+  font-weight:bold;
+  text-transform: uppercase;
+}
 
 
 /* SEGUNDO PUNTO DE CONTROL*/
@@ -444,7 +492,9 @@ fieldset span{
     min-width:20%;
   }
 }
-
+#perfiles button:first-child{
+  margin-right:40px;
+}
 /* TERCER PUNTO DE CONTROL TABLET*/
 @media (min-width:674px){
 
