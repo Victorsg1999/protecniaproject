@@ -1,4 +1,6 @@
-<footer class="container-fluid bg-dark">Protecnia 2021</footer>
+<footer class="container-fluid bg-dark">
+	<p>Protecnia 2021</p>
+</footer>
 <?php 
 ob_end_flush();
 ?>

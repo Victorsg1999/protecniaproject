@@ -9,7 +9,8 @@ $historico = new Historico();
 
 if (isset($_POST['guardar'])) {
     $descripcion = htmlspecialchars(trim($_POST['descripcion']));
-    $historico->actualizar_historico($id,$descripcion);
+    $historico->comprobacion_modificacion_datos_historico($id,$descripcion);
+    /*$historico->actualizar_historico($id,$descripcion);*/
     $resultado=$historico->recuperarhistorico($id);
     $descripcion=$historico->get_descripcionhistorico();
     $fecharesgistro=$historico->get_fecharegistro();
@@ -18,6 +19,7 @@ if (isset($_POST['guardar'])) {
     if($resultado==""){
         $descripcion=$historico->get_descripcionhistorico();
         $fecharesgistro=$historico->get_fecharegistro();
+        $trabajador=$historico->get_nombre_apellido_trabajador();
     }
 }
 
@@ -25,7 +27,17 @@ if (isset($_POST['guardar'])) {
 <section class="container">
 	<div class="box">
         <div class="box-header separacionclienteh2">
-        	<h2 class="clientes"><i class="fa fa-user"></i>Actualización de historico</h2>
+        	<?php
+        	if ($_SESSION["usuario"]=="cliente") {
+        	?>
+        		<h2 class="clientes"><i class="fa fa-user"></i>Visualización del historico</h2>
+        	<?php
+        	}else{
+        	?>
+        		<h2 class="clientes"><i class="fa fa-user"></i>Actualización de historico</h2>
+        	<?php
+        	}
+        	?>
             <hr/>
         </div>
         <div class="box-body">
@@ -37,7 +49,7 @@ if (isset($_POST['guardar'])) {
 					</div>
 					<div class="col-md-6">
 						<label for="name">Registrado por</label>
-						<input class="form-control" id="name" name="trabajador" type="text" disabled value="<?php echo $fecharesgistro?>">
+						<input class="form-control" id="name" name="trabajador" type="text" disabled value="<?php echo $trabajador?>">
 					</div>
 					<div class="col-md-12">
 						<label for="name">Descripción actual</label>
@@ -45,22 +57,39 @@ if (isset($_POST['guardar'])) {
 					</div>
 				</div>
 			</form>
+			<?php 
+			if($_SESSION["usuario"]!="cliente"){
+			?>
       		<h3 class="separacionclienteh2">Actualizar Registro</h3>
+      		<?php
+      		}
+      		?>
       		<form action="" method="post" enctype="multipart/form-data">
 				<div class="row">
+					<?php 
+					if($_SESSION["usuario"]!="cliente"){
+					?>
 					<div class="col-md-12">
 						<textarea align="justify" class="form-control" maxlength="350" name="descripcion" rows="3" required autofocus><?php echo htmlspecialchars($descripcion); ?></textarea>
 					</div>
-		    		<!--<div class="col-md-12">
-		     			<button type="submit" class="btn btn-success btn-lg" name="guardar" title="Guardar Histórico"><i class="fa fa-save"></i></button>
-	    			</div>-->
+					<?php 
+					}
+					?>
 	    			<div class="row separacioncontroles">
 						<div class="col-md-12">
-							<a href="index.php?p=clientes" type="reset" class="btn btn-secondary separacioncontrol"><i class="fa fa-backward" aria-hidden="true"></i></a>
-							<!--
-							<button type="submit" name="" class="btn btn-secondary"><a><i class="fa fa-backward" aria-hidden="true"></i></button>-->
-							<button type="submit" name="guardar" class="btn btn-success separacioncontrol">Guardar</button>
-							<a href="" type="reset" class="btn btn-danger separacioncontrol">Cancelar</a>
+							<?php 
+							 if($_SESSION["usuario"]!="cliente"){
+							?>
+								<a href="index.php?p=clientes" type="reset" class="btn btn-secondary separacioncontrol"><i class="fa fa-backward" aria-hidden="true"></i></a>
+								<button type="submit" name="guardar" class="btn btn-success separacioncontrol">Guardar</button>
+								<a href="" type="reset" class="btn btn-danger separacioncontrol">Cancelar</a>
+							<?php 
+							}else{
+							?>
+								<a href="<?php echo $_SERVER['PHP_SELF']?>?p=historicocliente&id=<?php echo $_SESSION['id']?>" type="reset" class="btn btn-secondary separacioncontrol"><i class="fa fa-backward" aria-hidden="true"></i></a>
+							<?php
+							}
+							?>
 						</div>
 					</div>
 						</div>

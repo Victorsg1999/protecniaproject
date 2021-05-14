@@ -29,37 +29,7 @@ $resultado=$usuario->existeusuario($usuariolg,$passlg);
       </p>
     </article>
     <article>
-      <img src="https://protecnia.es/wp-content/uploads/2020/02/bio.jpg" style="max-width: 100%;">
+      <img src="img/fefe.jpg" style="max-width: 100%;">
     </article>
 
   </section>
-
-    <section id="mensajecorporativo">
-      <article>
-        <h4><span>Somos</span><span>Protecnia</span></h4>
-      </article>
-
-      <article>
-        <p>Transformamos tus ideas en proyectos de primera calidad de acuerdo a tus necesidades.</p>
-        <p>Escríbenos y te intormaremos sin compromiso.</p>
-      </article>
-
-      <article>
-      BOTON
-      </article>
-    </section>
-
-
-
-
-
-
-
-
-
-
-
-
-           <!--   <div class="alert alert-danger formularioincorrecto" role="alert">
-        <strong>El usuario y la contraseña no son validos.</strong>
-      </div>--->

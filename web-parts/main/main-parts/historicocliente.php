@@ -8,15 +8,36 @@ $ciudad="";
 $cp="";
 $resultado="";
 $id=$_GET['id'];
-$cabecera=false;
+$resultado="";
+$usuario = new Usuario();
 $historico = new Historico();
+
+$cabecera=false;
+$conexion = Conexion::conectarBD();
+$total = $conexion->query("SELECT id,fecharegistro,descripcionhistorico,idtrabajador from historicosclientes where idcliente=$id");
+$total=$total->num_rows;
+if (isset($_GET['inicioUsuarios'])) {
+    $inicio = $_GET['inicioUsuarios'];
+}else{
+    $inicio = 0;
+}
+$cuantos = 5;
+$paginas = ceil($total/$cuantos);
+
 
 if (isset($_POST['guardar'])) {
     $descripcion = htmlspecialchars(trim($_POST['descripcion']));
-    $historico->crear_nuevo_registro_historico($id,$descripcion);
-    echo $descripcion;
+    $idtrabajador=$_SESSION['id'];
+    $historico->crear_nuevo_registro_historico($id,$descripcion,$idtrabajador);
 }else{
-    echo "";
+    $resultado=$usuario->recuperartodoslosdatosusuario($id);
+    if($resultado==""){
+            $nombre=$usuario->get_nombre();
+            $apellidos=$usuario->get_apellidos();
+            //$NA = $nombre." ". $apellidos;
+    }else{
+        echo $resultado;
+    }
 }
 
 ?>
@@ -24,24 +45,14 @@ if (isset($_POST['guardar'])) {
 
 	<div class="box">
         <div class="box-header separacionclienteh2">
-        	<h2 class="clientes"><i class="fa fa-user"></i>Historico del cliente <?php echo $nombre, $apellidos?></h2>
+
+        	<h2 class="clientes"><i class="fa fa-user"></i>Historico del cliente <?php echo "$nombre $apellidos"?></h2>
             <hr/>
         </div>
         <div class="box-body">
             <div class="table-responsive">
                     <table class="table table-hover"style="text-align: center;">
                         <?php
-                            $cabecera=false;
-                            $conexion = Conexion::conectarBD();
-                            $total = $conexion->query("SELECT id,fecharegistro,descripcionhistorico,idtrabajador from historicosclientes where idcliente=$id");
-                            $total=$total->num_rows;
-                            if (isset($_GET['inicioUsuarios'])) {
-                                $inicio = $_GET['inicioUsuarios'];
-                            }else{
-                                $inicio = 0;
-                            }
-                            $cuantos = 4;
-                            $paginas = ceil($total/$cuantos);
 
                             $conexion = Conexion::conectarBD();
                             $result = $conexion->query("SELECT id,fecharegistro,descripcionhistorico,idtrabajador from historicosclientes where idcliente=$id limit $inicio,$cuantos");
@@ -65,16 +76,25 @@ if (isset($_POST['guardar'])) {
                                         <?php
                                             foreach ($fila as $indice => $valor) {
                                                 if($indice!='tipo'&&$indice!='id'&&$indice!='usuario'&&$indice!='contraseña'){
+                                                    if ($indice=="idtrabajador") {
+                                                        $trabajador = new Usuario();
+                                                        $trabajador->recuperartodoslosdatosusuario($valor);
+                                                        $nombre_apellido = $trabajador->get_nombre()." ".$trabajador->get_apellidos();
+                                                        echo "<td>$nombre_apellido</td>";
+                                                    }else{
                                                    echo "<td>$valor</td>";
+                                                    }
                                                 }
                                                 if($indice=='id'){
-                                                    $id=$valor;
+                                                    $id_historico=$valor;
                                                 }
                                                 if($indice=='idtrabajador'){
                                                     echo "<td>";
-                                                    echo '<a href="'.$_SERVER['PHP_SELF'].'?p=updatehistorico&id='.$id.'"class="btn btn-secondary bg-primary" title="Editar Información del cliente"><i class="fa fa-eye" aria-hidden="true"></i></a>';
-                                                    echo '<a href="'.$_SERVER['PHP_SELF'].'?p=historico&id='.$id.'"class="btn btn-warning" title="Imprimir Información cliente"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>';
-                                                    echo '<a href="eliminarcliente.php?id='.$id.'" target="_blank" class="btn btn-danger text-dark" title="Borrar cliente"><i class="fa fa-trash-o"></i></a>';
+                                                    echo '<a href="'.$_SERVER['PHP_SELF'].'?p=updatehistorico&id='.$id_historico.'"class="btn btn-secondary bg-primary" title="Ver historico"><i class="fa fa-eye" aria-hidden="true"></i></a>';
+                                                    if($_SESSION["usuario"]!="cliente"){
+                                                        echo '<a href="'.$_SERVER['PHP_SELF'].'?p=historico&id='.$id_historico.'"class="btn btn-warning" title="Imprimir Información cliente"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>';
+                                                        echo '<a href="'.$_SERVER['PHP_SELF'].'?p=confirmacioneliminarhistorico&id='.$id_historico.'"class="btn btn-danger text-dark" title="Borrar cliente"><i class="fa fa-trash-o"></i></a>';
+                                                    }
                                                     echo "</td>";
                                                 }
                                             }
@@ -85,6 +105,9 @@ if (isset($_POST['guardar'])) {
                         ?>
                     </tbody>
                 </table>
+                <?php 
+                if($cabecera){
+                ?>
                 <nav aria-label="Page navigation example">
                     <ul class="pagination">
                         <li class="page-item
@@ -92,7 +115,7 @@ if (isset($_POST['guardar'])) {
                                 echo "disabled";
                             }?>
                             ">
-                            <a class="page-link" href="<?php echo $_SERVER['PHP_SELF'] ?>?p=historicocliente&inicioUsuarios=<?php echo $inicio-$cuantos ?>"
+                            <a class="page-link" href="<?php echo $_SERVER['PHP_SELF'] ?>?p=historicocliente&id=<?php echo $id ?>&inicioUsuarios=<?php echo $inicio-$cuantos ?>"
                                 <?php if ($inicio==0){
                                  echo "tabindex='-1' aria-disabled='true'";
                                 }?>
@@ -107,7 +130,7 @@ if (isset($_POST['guardar'])) {
                                         echo "active";
                                     }?>
                                     ">
-                                    <a class="page-link" href="<?php echo $_SERVER['PHP_SELF'] ?>?p=historicocliente&inicioUsuarios=<?php echo $cuantos*($i-1) ?>">
+                                    <a class="page-link" href="<?php echo $_SERVER['PHP_SELF'] ?>?p=historicocliente&id=<?php echo $id ?>&inicioUsuarios=<?php echo $cuantos*($i-1) ?>">
                                         <?php echo $i ?></a>
                                     </li>
                         <?php
@@ -118,7 +141,7 @@ if (isset($_POST['guardar'])) {
                                 echo "disabled";
                             }?>
                             ">
-                                <a class="page-link" href="<?php echo $_SERVER['PHP_SELF'] ?>?p=historicocliente&inicioUsuarios=<?php echo $inicio+$cuantos ?>"
+                                <a class="page-link" href="<?php echo $_SERVER['PHP_SELF'] ?>?p=historicocliente&id=<?php echo $id ?>&inicioUsuarios=<?php echo $inicio+$cuantos ?>"
                                     <?php if ($inicio>=$total-$cuantos){
                                         echo "tabindex='-1' aria-disabled='true'";
                                     }?>
@@ -126,9 +149,21 @@ if (isset($_POST['guardar'])) {
                         </li>
                     </ul>
                 </nav>
+                <?php 
+                }else{
+                ?>
+                <div class="alert alert-warning d-flex justify-content-center" role="alert">
+                    <b>No hay ningun historico del cliente.</b>
+                </div>
+                <?php
+                }
+                ?>
             </div>
         </div>
   	</div>
+<?php 
+if($_SESSION["usuario"]!="cliente"){
+?>
 	<div class="box mt-3">
 		<div class="box-body">
             <h3>Añadir nuevo registro</h3>
@@ -147,6 +182,8 @@ if (isset($_POST['guardar'])) {
             </form>
         </div>
     </div>    
-
+<?php
+}
+?>
 </section>
  

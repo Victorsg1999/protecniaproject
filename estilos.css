@@ -394,15 +394,20 @@ fieldset span{
 }
 
 .contactolegend {
-    color: #36A0FF;
-    font-size: 27px;
+    color: #1b5a8f;
+    font-weight:bold;
+    font-size: 40px;
     padding: 10px;
     text-align:center;
 }
 
 .iconocontacto {
     font-size: 35px;
-    color: #36A0FF;
+    color: #1b5a8f;
+}
+
+.enviar{
+  background-color:#1b5a8f;
 }
 
 /* Registro cliente */
@@ -447,19 +452,50 @@ fieldset span{
   display: inline-block;
   font-size: 20px;
   margin: 4px 2px;
-  min-width:15%;
+  min-width:18%;
 }
 
-#perfiles button:first-child{
-  margin-right:20px;
+
+#reguntacentrada{
+	text-align:center;
+	font-size:800px;
 }
+
+#confirmacion{
+	display:flex;
+	flex-direction:row;
+	justify-content:center;
+	font-size:20px;
+}
+
+
+#confirmacion button{
+  background-color:#636363;
+  border: none;
+  color: white;
+  padding: 10px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 20px;
+  margin: 4px 2px;
+  min-width:30%;
+}
+
+#perfiles button{
+  margin-right:30px;
+}
+
 
 #perfiles button:hover{
+  font-size: 16px;
   background-color:black;
   font-weight:bold;
   text-transform: uppercase;
 }
-
+.borrar{
+  margin:0;
+}
 
 /* SEGUNDO PUNTO DE CONTROL*/
 /* Movil mas grande*/
@@ -528,6 +564,11 @@ fieldset span{
 
   .wrapper .imagen{
     width:430px;
+  }
+
+  footer{
+  	display: flex;
+  	justify-content: space-around;
   }
 
 }

@@ -1,38 +1,94 @@
-<?php
 
-if($_SESSION["usuario"] != "admin"){
-header("Location:cliente.php");
+<?php
+/*if($_SESSION["usuario"] == "cliente"){
+header("Location: index.php?p=clientes");
+}*/
+
+function eliminarUsuario(){
+    $usuario = new Usuario();
+    $usuario->eliminarUsuario($id);
 }
+if(isset($_REQUEST["condicion"])){
+    if($_REQUEST["condicion"] == "eliminarUsuario" ){
+       echo eliminarUsuario();
+       exit();
+    }
+}
+
+
 ?>
 <section class="container">
 <?php
     $cabecera=false;
-	$conexion = Conexion::conectarBD();
-	$total = $conexion->query("SELECT * FROM usuarios WHERE tipo ='cliente'");
-/*print_r($total);*/
-	$total=$total->num_rows;
-    if (isset($_GET['inicioUsuarios'])) {
-        $inicio = $_GET['inicioUsuarios'];
-    }else{
-        $inicio = 0;
-    }
-   /* echo"<br>".$total;*/
-    $cuantos = 10;
-    $paginas = ceil($total/$cuantos);
-  /*  echo"<br>".$paginas;*/
 ?>
-
 	<div class="container"><!-- my-5 mb-5-->
 		<div class="box">
             <div class="box-header separacionclienteh2">
-                <h2 class="clientes"><i class="fa fa-users"></i>  Clientes</h2>
+                <h2 id="tipoempleado" class="clientes"><i class="fa fa-users"></i>Usuarios</h2>
                 <hr/>
+                <form id="mostrar" action="<?php echo $_SERVER['PHP_SELF'] ?>?p=clientes" method="POST">
+                    <div id="perfiles">
+                        <button type="submit" name='usuarios'>Clientes</button>
+                        <?php
+                        if($_SESSION['id']==1||$_SESSION["usuario"] ="Admin"){
+                        ?>
+                        <button type="submit" name='empleado'>Empleado</button>
+                        <!--<button type="submit" name='administrador'>Administrador</button>-->
+                        <?php
+                    	}
+                        ?>
+                    </div>
+                </form>
             </div>
-            <div class="box-body">
+<?php 
+if (isset($_POST['usuarios'])||isset($_POST['empleado'])||isset($_GET['administrador'])) {
+?>
+            <div class="box-body mt-5">
         		<div class="table-responsive">
                     <table class="table table-hover"style="text-align: center;">
                     	<?php
-                        	$result = $conexion->query("SELECT * FROM usuarios where tipo='cliente' limit $inicio,$cuantos");
+                            if(isset($_POST['usuarios'])){
+                                $conexion = Conexion::conectarBD();
+                                $total = $conexion->query("SELECT * FROM usuarios WHERE tipo ='cliente'");
+                                $total=$total->num_rows;
+                                if (isset($_GET['inicioUsuarios'])) {
+                                    $inicio = $_GET['inicioUsuarios'];
+                                }else{
+                                    $inicio = 0;
+                                }
+                                $cuantos = 10;
+                                $paginas = ceil($total/$cuantos);
+                                $result = $conexion->query("SELECT * FROM usuarios where tipo='cliente' limit $inicio,$cuantos");  
+                            }
+
+                            if(isset($_POST['empleado'])){
+                                $conexion = Conexion::conectarBD();
+                                $total = $conexion->query("SELECT * FROM usuarios where tipo='Trabajador'");
+                                $total=$total->num_rows;
+                                if (isset($_GET['inicioUsuarios'])) {
+                                    $inicio = $_GET['inicioUsuarios'];
+                                }else{
+                                    $inicio = 0;
+                                }
+                                $cuantos = 10;
+                                $paginas = ceil($total/$cuantos);
+                                $result = $conexion->query("SELECT * FROM usuarios where tipo='Trabajador' limit $inicio,$cuantos");  
+                            }
+
+                            if(isset($_POST['administrador'])){
+                                $conexion = Conexion::conectarBD();
+                                $total = $conexion->query("SELECT * FROM usuarios where tipo='Admin'");
+                                $total=$total->num_rows;
+                                if (isset($_GET['inicioUsuarios'])) {
+                                    $inicio = $_GET['inicioUsuarios'];
+                                }else{
+                                    $inicio = 0;
+                                }
+                                $cuantos = 10;
+                                $paginas = ceil($total/$cuantos);
+                                $result = $conexion->query("SELECT * FROM usuarios where tipo='Admin' limit $inicio,$cuantos");  
+                            }
+                        	
                         	while ($fila=$result->fetch_assoc()) {
                 				if(!$cabecera){
                 					$cabecera=true;
@@ -67,9 +123,12 @@ header("Location:cliente.php");
                             					if($indice=='cp'){
                             						echo "<td>";
                             						echo '<a href="'.$_SERVER['PHP_SELF'].'?p=fichaupdate&id='.$id.'"class="btn btn-secondary" title="Editar Información del cliente"><i class="fa fa-user text-dark"></i>  </a>';
-                            						echo '<a href="'.$_SERVER['PHP_SELF'].'?p=historicocliente&id='.$id.'"class="btn btn-warning" title="Imprimir Información cliente"><i class="fa fa-book"></i></a>';
-                            						echo '<a href="imprimircliente.php?id='.$id.'" target="_blank" class="btn btn-info" title="Imprimir Información cliente"><i class="fa fa fa-print text-dark"></i></a>  ';
-                            						echo '<a href="eliminarcliente.php?id='.$id.'" target="_blank" class="btn btn-danger text-dark" title="Borrar cliente"><i class="fa fa-trash-o"></i></a>';
+                            						echo '<a href="'.$_SERVER['PHP_SELF'].'?p=historicocliente&id='.$id.'"class="btn btn-warning" title="Historico Cliente"><i class="fa fa-book"></i></a>';
+                                                    echo '<a target="_blank" href="pdf/generarPDF.php?id='.$id.'"class="btn btn-info" title="Imprimir Información cliente"><i class="fa fa-file-pdf-o" aria-hidden="true"></i>';
+                                                    /*
+                                                    echo '<a href=""id="delete_product" data-id="'.$id.'"class="btn btn-danger text-dark" title="Borrar cliente"><i class="fa fa-trash-o"></i></a>';
+                                                    */
+                                                    echo '<a href="'.$_SERVER['PHP_SELF'].'?p=confirmacioneliminarcliente&id='.$id.'"class="btn btn-danger text-dark" title="Borrar cliente"><i class="fa fa-trash-o"></i></a>';
                                                     echo "</td>";
                             					}
                             				}
@@ -81,6 +140,9 @@ header("Location:cliente.php");
                     </tbody>
             	</table>
             </div>
+        <?php 
+            if($cabecera){
+        ?>
     	<nav aria-label="Page navigation example">
     	  	<ul class="pagination">
     		    <li class="page-item
@@ -122,6 +184,31 @@ header("Location:cliente.php");
                 </li>
       		</ul>
     	</nav>
+        <?php 
+        }else{
+        ?>
+        <div class="alert alert-warning d-flex justify-content-center" role="alert">
+            <?php
+            if(isset($_POST['usuarios'])){
+            ?>
+                <b>No hay ningun cliente registrado.</b>
+            <?php
+            }else if(isset($_POST['empleado'])){
+            ?>
+                <b>No hay ningun empleado registrado.</b>
+            <?php
+            }else{
+            ?>
+                <b>No hay ningun administrador registrado.</b>
+            <?php
+            }
+            ?>
+        </div>
+        <?php
+        Conexion::desconectarBD($conexion);
+        }
+}
+        ?>
     </div>
 </div>
 </section>

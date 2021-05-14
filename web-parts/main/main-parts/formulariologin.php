@@ -4,20 +4,23 @@ if (isset($_POST['registro'])) {
 $usuariolg = htmlspecialchars(trim($_POST['usuariolg']));
 $passlg = htmlspecialchars(trim($_POST['passlg']));
 $resultado=$usuario->existeusuario($usuariolg,$passlg);
-echo $resultado;
   if($resultado=="ok"){
     $tipo=$usuario->get_tipo();
     $tipo=strtolower($tipo);
-    $_SESSION["usuario"] = strtolower($tipo);
-    if($tipo=="admin"){
-      header("Location:index.php?p=clientes");
-    }else if($tipo=="cliente"){
-      $id=$usuario->get_id();
-      echo $id;
-      header("Location:index.php?p=fichaupdate&id=".$id);
+    $id=$usuario->get_id();
+    $_SESSION['id'] = $id;
+    $_SESSION["usuario"] =$tipo;
+    if ($tipo!="cliente") {
+      header("Location: index.php?p=clientes");
+    }else{
+      header("Location:index.php?p=historicocliente&id=".$id);
     }
   }else{
-    echo $resultado;
+  ?>
+    <div class="alert alert-danger" role="alert">
+      Login incorrecto
+    </div>
+<?php
   }
 }
 ?>

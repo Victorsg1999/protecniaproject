@@ -98,7 +98,7 @@
 			}// fin funcion existeusuario
 
 
-			function registrocliente($nombre,$apellidos,$email,$telefono,$ciudad,$cp){
+			function comprobar_registro_usuario($nombre,$apellidos,$email,$telefono,$ciudad,$cp,$tipo){
 				
 				$resultado="";
 				$this->nombre = $nombre;
@@ -107,6 +107,7 @@
 				$this->telefono = $telefono;
 				$this->ciudad = $ciudad;
 				$this->cp = $cp;
+				$this->tipo = $tipo;
 
 				if(strlen($this->nombre)==0){
 					$resultado.="El nombre debe contener al menos tres caracteres.<br>";
@@ -135,7 +136,7 @@
 					$resultado.="El campo telefono debe contener 9 digitos.<br>";
 				}else{
 					if (!preg_match("/^6[0-9]{8}$/", $this->telefono)) {
-						$resultado.="El campo telefono debe contener 9 digitos y empezar por el numero.<br>"; 
+						$resultado.="El campo telefono debe contener 9 digitos y empezar por el numero 6.<br>"; 
 					}
 				}
 
@@ -155,32 +156,43 @@
 				}
 
 				if($resultado==""){
-					$this->registrar();
+					$this->registrar_nuevo_usuario();
 				}else{
 				echo '<div class="alert alert-danger d-flex justify-content-center" role="alert" style="width:100%">'.$resultado.'</div>';
+				$resultado="no";
+				return $resultado;
 				}
-			}// fin funcion registrocliente
+			}// fin funcion comprobar_registro_cliente
 
-			function registrar(){
+
+			function registrar_nuevo_usuario(){
 
 				$resultado="";
 				$conexion = Conexion::conectarBD();
-				$sql ="INSERT INTO usuarios (nombre,apellidos,email,telefono,ciudad,cp,usuario,contraseña,tipo) VALUES ('$this->nombre','$this->apellidos', '$this->email','$this->telefono','$this->ciudad','$this->cp','$this->email','$this->email','cliente')";
-
+				$sql ="INSERT INTO usuarios (nombre,apellidos,email,telefono,ciudad,cp,usuario,contraseña,tipo) VALUES ('$this->nombre','$this->apellidos', '$this->email','$this->telefono','$this->ciudad','$this->cp','$this->email','$this->email','$this->tipo')";
 				if ($conexion->query($sql)) {
-					Conexion::desconectarBD($conexion);
-					echo '<div class="alert alert-success d-flex justify-content-center" role="alert" style="width:100%">El cliente se ha registrado correctamente!</div>';
+					$this->enviarcorreo_a_contacto();
+					if($this->tipo=="Cliente"){
+						echo '<div class="alert alert-success d-flex justify-content-center" role="alert" style="width:100%">El cliente se ha registrado correctamente!</div>';
+					}else if($this->tipo=="Admin"){
+						echo '<div class="alert alert-success d-flex justify-content-center" role="alert" style="width:100%">El nuevo empleado se ha registrado correctamente como Administrador!</div>';
+					}else{
+						echo '<div class="alert alert-success d-flex justify-content-center" role="alert" style="width:100%">El nuevo empleado se ha registrado correctamente.!</div>';
+					}
+					return $resultado;
+					
 				}else{
-					echo "no";
-					Conexion::desconectarBD($conexion);
-				}		
+					$resultado="no";
+					return $resultado;
+				}
+				Conexion::desconectarBD($conexion);
 
 			}
 
 
 
 
-			function contacto($nombre,$apellidos,$email,$telefono,$mensaje){
+			function contactosoporte($nombre,$apellidos,$email,$telefono,$mensaje){
 				
 				$resultado="";
 				$this->nombre = $nombre;
@@ -210,7 +222,7 @@
 				}
 
 				if($resultado==""){
-					$this->guardarpregunta();
+					$this->enviarcorreo_a_soporte();
 				}else{
 				echo '<div class=" container-fluid alert alert-danger" role="alert">Los siguientes campos son erroneos: '.$resultado.'.</div>';
 				}
@@ -268,7 +280,7 @@
 					if($cambios==1){
 						$this->insertarcambios();
 					}else{
-						echo '<div class=" container-fluid alert alert-danger" role="alert">No se ha actualizado ningun dato del usuario!</div>';
+						echo '<div class="alert alert-danger d-flex justify-content-center" role="alert" style="width:100%">No se ha actualizado ningun dato del usuario!</div>';
 					}
 
 				}
@@ -283,7 +295,7 @@
 
 				if ($conexion->query($sql)) {
 					Conexion::desconectarBD($conexion);
-					echo '<div class=" container-fluid alert alert-success" role="alert">Se ha actualizado el usuario!</div>';
+					echo '<div class="alert alert-success d-flex justify-content-center" role="alert" style="width:100%">Se ha actualizado el usuario!</div>';
 				}else{
 					echo "no";
 					Conexion::desconectarBD($conexion);
@@ -291,51 +303,79 @@
 
 			}// fin funcion insertarcambios
 
-
-
-
-
-
-
-
-/*
-			function guardarpregunta(){
-
-				$resultado="";
-				$conexion = Conexion::conectarBD();
-				$sql ="INSERT INTO contacto (nombre,apellidos,email,telefono,mensaje) VALUES ('$this->nombre', '$this->apellidos', '$this->email','$this->telefono','$this->mensaje')";
-
-				if ($conexion->query($sql)) {
-					Conexion::desconectarBD($conexion);
-					echo "si";
-					$this->enviarcorreo_a_contacto();
-				}else{
-					//echo "no";
-					Conexion::desconectarBD($conexion);
-				}		
-
-			}// fin funcion guardarpregunta
-
 			function enviarcorreo_a_contacto(){
 				
 				$to=$this->email;
-				$headers = "MIME-Version: 1.0" . "\r\n";
+		        $asunto = "Datos usuario Protecnia";
+		        $headers = "MIME-Version: 1.0" . "\r\n";
 				$headers .= "Content-type:text/html;charset=UTF-8" . "\r\n";
-				$headers .= 'From: <you@yourwebsite.com>' . "\r\n";
-				$headers .= 'Cc: v.semgui@gmail.com' . "\r\n";
-				$contenido='<table width="100%" border="1" cellspacing="1" cellpadding="2">
-				<tr><td colspan="2">Someone Contacted You On Your Website</td></tr>
-				<tr><td>Subject</td><td>'.$this->email.'</td></tr>
-				<tr><td>Message</td><td>'.$this->mensaje.'</td></tr>
-				<tr><td colspan="2"><img src="https://a1websitepro.com/wp-content/uploads/2014/09/logo200.png" width="300px"/></td></tr>
-				</table>';
-				mail($to,$this->email,$contenido,$headers);
-				//send message back to AJAX
-				echo '<div class="alert alert-success">Thank you for contacting us. Someone will get back to you within 1 Business Day.</div>';
+				$headers .= "From: Protecnia <victorsempereguilaber1999@gmail.com>" . "\r\n";
+				$headers .= "Cc: victorsempereguilaber1999@gmail.com" . "\r\n";
+		        $contenido = "
+		                <p>Sr./Sra. <strong>$this->nombre</strong>,</p>
+		                <p>Sus datos de acceso para poder ver sus reformas es este mismo correo y contraseña, si desea puede cambiar los datos de acceso mediante la url.</p>
+		                <p>Gracias por confiar en nuestro servicio.</p>
+		                <p>Un cordial saludo.</p>
+		                <img src='https://protecnia.es/wp-content/uploads/2020/02/logo_protecnia.png' alt='LOGO' width='30%'>
+		            	";
 
-
+		        if (mail($to,$asunto,$contenido,$headers)) {
+		            ?>
+		            <div class="alert alert-success d-flex justify-content-center" role="alert" style="width:100%">
+		                Se ha enviado el correo con los datos de login.
+		            </div>
+		        <?php
+		        }else{
+		        ?>
+		            <div class="alert alert-danger d-flex justify-content-center" role="alert" style="width:100%">
+		                El correo no ha sido enviado. Ha ocurrido un error. Vuelva a intentarlo o pongase en contacto con nosotros por otra via.
+		            </div>
+		        <?php
+		        }
 			}// fin funcion enviarcorreo_a_contacto
-*/
+
+			function enviarcorreo_a_soporte(){
+				
+				$to=$this->email;
+		        $asunto = "Soporte Protecnia";
+		        $headers = "MIME-Version: 1.0" . "\r\n";
+				$headers .= "Content-type:text/html;charset=UTF-8" . "\r\n";
+				$headers .= "From: Protecnia <victorsempereguilaber1999@gmail.com>" . "\r\n";
+				$headers .= "Cc: victorsempereguilaber1999@gmail.com" . "\r\n";
+		        $contenido = "
+		                <p>Sr./Sra. <strong>$this->nombre</strong>,</p>
+		                <p>Nos complace decirle que hemos recibido su pregunta,nos pondremos en contacto con usted lo antes posible..</p>
+		                <p>Gracias por confiar en nuestro servicio.</p>
+		                <p>Un cordial saludo.</p>
+		                <img src='https://protecnia.es/wp-content/uploads/2020/02/logo_protecnia.png' alt='LOGO' width='30%'>
+		            	";
+
+		        if (mail($to,$asunto,$contenido,$headers)) {
+		            ?>
+		            <div class="alert alert-success d-flex justify-content-center" role="alert" style="width:100%">
+		                Hemos procesado su solicitud correctamente, le atenderemos lo antes posible.
+		            </div>
+		        <?php
+		        }else{
+		        ?>
+		            <div class="alert alert-danger d-flex justify-content-center" role="alert" style="width:100%">
+		                El correo no ha sido enviado. Ha ocurrido un error. Vuelva a intentarlo o pongase en contacto con nosotros por otra via.
+		            </div>
+		        <?php
+		        }
+			}// fin funcion enviarcorreo_a_soporte
+
+			function eliminarUsuario($id){
+				$resultado="";
+				$conexion = Conexion::conectarBD();
+				$sql = "DELETE FROM usuarios WHERE id='$id'";
+				if(!$conexion->query($sql)){
+					$resultado="no";
+				}
+				return $resultado;
+				Conexion::desconectarBD($conexion);
+			}
+
 		}// fin classe
 ?>
 

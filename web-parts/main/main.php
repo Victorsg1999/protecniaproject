@@ -40,6 +40,13 @@
     if($pagina=="updatehistorico"){
         include("web-parts/main/main-parts/updatehistorico.php");
     }
+
+    if($pagina=="confirmacioneliminarcliente"){
+        include("web-parts/main/main-parts/confirmacioneliminarcliente.php");
+    }
+    if($pagina=="confirmacioneliminarhistorico"){
+        include("web-parts/main/main-parts/confirmacioneliminarhistorico.php");
+    }
 ?>
 </main>
 <!--

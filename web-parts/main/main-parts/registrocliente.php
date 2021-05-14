@@ -1,9 +1,5 @@
 <?php
 
-if($_SESSION["usuario"] != "admin"){
-header("Location:index.php");
-}
-
 $nombre="";
 $apellidos="";
 $email="";
@@ -19,7 +15,8 @@ if (isset($_POST['guardarcliente'])) {
 	$telefono = htmlspecialchars(trim($_POST['telefono']));
 	$ciudad = htmlspecialchars(trim($_POST['ciudad']));
 	$cp = htmlspecialchars(trim($_POST['cp']));
-	$usuario->registrocliente($nombre,$apellidos,$email,$telefono,$ciudad,$cp);
+	$tipo="Cliente";
+	$usuario->comprobar_registro_usuario($nombre,$apellidos,$email,$telefono,$ciudad,$cp,$tipo);
 }
 
 ?>
@@ -61,7 +58,7 @@ if (isset($_POST['guardarcliente'])) {
 					<div class="row separacioncontroles">
 						<div class="col-md-12">
 							<a href="index.php?p=clientes" type="reset" class="btn btn-secondary separacioncontrol"><i class="fa fa-backward" aria-hidden="true"></i></a>
-							<button type="submit" name="guardarcliente" id="guardarcliente" class="btn btn-success separacioncontrol">Guardar</button>
+							<button name="guardarcliente" id="guardarcliente" class="btn btn-success separacioncontrol">Guardar</button>
 							<a href="" type="reset" class="btn btn-danger separacioncontrol">Cancelar</a>
 						</div>
 					</div>
